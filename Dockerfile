@@ -1,10 +1,9 @@
-# Build stage
 FROM node:18-alpine AS builder
 
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 COPY . .
 RUN npm run build
@@ -14,11 +13,13 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Install simple HTTP server
+# Install http-server
 RUN npm install -g http-server
 
 COPY --from=builder /app/dist ./dist
 
-EXPOSE ${PORT:-5173}
+# Listen on all interfaces
+EXPOSE 3000
 
-CMD ["http-server", "dist", "-p", "${PORT:-5173}", "--cors"]
+# Use sh -c to expand environment variables properly
+CMD ["sh", "-c", "http-server dist -p ${PORT:-3000} --cors --gzip"]

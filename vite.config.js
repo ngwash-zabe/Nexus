@@ -3,7 +3,7 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   root: '.',
   server: {
-    port: process.env.PORT || 5173,
+    port: parseInt(process.env.PORT) || 3000,
     host: '0.0.0.0',
     middlewareMode: false
   },
