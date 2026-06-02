@@ -1,12 +1,18 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  root: '.', // project root
-
+  root: '.',
   server: {
-
-    port: 5173
-    
-
+    port: process.env.PORT || 5173,
+    host: '0.0.0.0',
+    middlewareMode: false
+  },
+  build: {
+    outDir: 'dist',
+    minify: 'terser',
+    sourcemap: false
+  },
+  define: {
+    __DEV__: JSON.stringify(process.env.NODE_ENV !== 'production')
   }
 });
